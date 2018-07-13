@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html ng-app="exampleApp">
+<head>
+    <title>Controllers</title>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="ngmodules/angular.js"></script>
+    <script src="controllers/multipleControllers.js"></script>
+</head>
+<body >
+    <div class="well" ng-controller="firstController">
+        <h4>First Controller</h4>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default"
+                        type="button"
+                        ng-click="reverseText()">
+                    Reverse
+                </button>
+                <input type="text" class="form-control" ng-model="dataValue">
+            </span>
+        </div>
+    </div>
+
+    <div class="well" ng-controller="secondController">
+        <h4>First Controller</h4>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default"
+                        type="button"
+                        ng-click="changeCase()">
+                    Change Case
+                </button>
+                <input type="text" class="form-control" ng-model="dataValue">
+            </span>
+        </div>
+    </div>
+
+    <div class="well" ng-controller="simpleCtrl as ctrl">
+        <h4>First Controller</h4>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default"
+                        type="button"
+                        ng-click="ctrl.reverseText()">
+                    Change Case
+                </button>
+                <input type="text" class="form-control" ng-model="ctrl.dataValue">
+            </span>
+        </div>
+    </div>
+</body>
+</html>

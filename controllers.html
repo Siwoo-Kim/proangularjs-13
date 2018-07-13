@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html ng-app="exampleApp">
+<head>
+    <title>Controllers</title>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="ngmodules/angular.js"></script>
+
+    <script>
+        angular.module("exampleApp", [])
+            .controller("simpleCtrl", function ($scope) {
+                $scope.cities = ["London", "New York", "Paris"];
+                $scope.city = "London";
+                $scope.getCountry = function (city) {
+                    switch (city) {
+                        case "London":
+                            return "UK";
+                        case "New York":
+                            return "USA";
+                    }
+                };
+            })
+            .controller("addressCtrl", function ($scope, ZipCodes) {
+                $scope.$on("zipCodeUpdated", function (event, args) {
+                    $scope[args.type] = args.zipCode;
+                });
+
+                $scope.setAddress = function (type, zip) {
+                    ZipCodes.setZipCode(type, zip);
+                    // $rootScope.$broadcast("zipCodeUpdated", {
+                    //     type: type, zipCode: zip
+                    // });
+                    console.log('Type: ' + type + ", " + zip);
+                };
+                $scope.copyAddress = function () {
+                    $scope.zip = $scope.billingZip;
+                };
+            })
+            .service("ZipCodes", function ($rootScope) {
+                return {
+                    setZipCode: function (type, zip) {
+                        this[type] = zip;
+                        $rootScope.$broadcast("zipCodeUpdated", {
+                            type: type, zipCode: zip
+                        });
+                    }
+                }
+            })
+    </script>
+</head>
+<body ng-controller="simpleCtrl">
+    <div class="container" style="padding-top: 50px">
+        <div class="well" ng-controller="addressCtrl">
+            <h4>Billing Zip Code</h4>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="zip">
+                <button class="btn btn-primary" ng-click="setAddress('billingZip', zip)">
+                    Save Billing
+                </button>
+            </div>
+        </div>
+        <div class="well" ng-controller="addressCtrl">
+            <h4>Shipping Zip Code</h4>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="zip">
+                <button class="btn btn-primary" ng-click="copyAddress()">
+                    Use Billing
+                </button>
+                <button class="btn btn-primary" ng-click="setAddress('shippingZip', zip)">
+                    Save Shipping
+                </button>
+            </div>
+        </div>
+
+        <div class="well">
+            <label>Select City:</label>
+            <select ng-options="city for city in cities" ng-model="city"></select>
+        </div>
+        <div class="well">
+            <p>The city is: {{ city }}</p>
+            <p>The country is: {{ getCountry(city) || 'Unknown' }}</p>
+        </div>
+    </div>
+</body>
+</html>
